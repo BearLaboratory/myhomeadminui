@@ -1,17 +1,36 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '@/views/Login'
-import Layout from '@/views/Layout'
+
 import DevRegist from '@/views/DevRegist'
 import DashBoard from '@/views/innerpage/DashBoard'
-import { getToken } from '@/utils/TokenUtil'
+// import { getToken } from '@/utils/TokenUtil'
 import ProductManage from '@/views/innerpage/ProductManage'
 import DeviceManage from '@/views/innerpage/DeviceManage'
 import AppVersionManage from '@/views/innerpage/AppVersionManage'
+import Layout from '@/layout'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+import UserManage from '@/views/system-page/UserManage'
+import RoleManage from '@/views/system-page/RoleManage'
+import PermissionManage from '@/views/system-page/PermissionManage'
+import { getToken } from '@/utils/TokenUtil'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/login',
+    name: 'Login',
+    meta: { title: '登录' },
+    component: Login
+  },
+  // {
+  //   path: '/404',
+  //   meta: { title: '404' },
+  //   component: () => import('@/views/error-page/404'),
+  //   hidden: true
+  // },
   {
     path: '/',
     name: 'Layout',
@@ -41,18 +60,36 @@ const routes = [
         name: 'DeviceManage',
         meta: { title: '设备管理' },
         component: DeviceManage
+      },
+      {
+        path: '/userManage',
+        name: 'UserManage',
+        meta: { title: '人员管理' },
+        component: UserManage
+      },
+      {
+        path: '/roleManage',
+        name: 'RoleManage',
+        meta: { title: '角色管理' },
+        component: RoleManage
+      },
+      {
+        path: '/PermissionManage',
+        name: 'PermissionManage',
+        meta: { title: '权限管理' },
+        component: PermissionManage
       }
     ]
-  }, {
-    path: '/login',
-    name: 'Login',
-    meta: { title: '登录' },
-    component: Login
   }, {
     path: '/devRegist',
     name: 'DevRegist',
     meta: { title: '开发者注册' },
     component: DevRegist
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
   }
 ]
 
@@ -61,6 +98,7 @@ const router = new VueRouter({
 })
 // 路由守卫监控是否登录
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   const baseTitle = 'MyHome'
   document.title = baseTitle + ' | ' + to.meta.title
   if (to.path === '/login' || to.path === '/devRegist') {
@@ -76,6 +114,9 @@ router.beforeEach((to, from, next) => {
       next()
     }
   }
+})
+router.afterEach(() => {
+  NProgress.done()
 })
 
 export default router

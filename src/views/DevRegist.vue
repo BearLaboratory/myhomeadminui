@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-box">
       <div class="login-left">
-        <img src="../assets/inner-login.png" height="295" width="363"/>
+        <img src="../assets/login/inner-login.png" height="295" width="363"/>
       </div>
       <div class="login-right">
         <div class="login-header">
@@ -50,7 +50,7 @@ export default {
 <style lang="scss" scoped>
 .login-container {
   height: 100vh;
-  background: url("~@/assets/login-back.jpg") center center fixed no-repeat;
+  background: url("~@/assets/login/login-back.jpg") center center fixed no-repeat;
   background-size: cover;
 
   .regist-box {

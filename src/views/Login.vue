@@ -2,22 +2,24 @@
   <div class="login-container">
     <div class="login-box">
       <div class="login-left">
-        <img src="../assets/inner-login.png" height="295" width="363"/>
+        <img src="../assets/login/inner-login.png" height="295" width="363"/>
       </div>
       <div class="login-right">
         <div class="login-header">
           <span>MyHome | 后台系统</span>
         </div>
         <div class="login-input-box">
-          <el-input size="large" v-model="phone" placeholder="手机号码" prefix-icon="el-icon-mobile"></el-input>
-          <el-input style="margin-top: 20px" ref="userNameInput" size="large" v-model="password" type="password"
+          <el-input size="large" v-model="loginObject.phone" placeholder="手机号码" prefix-icon="el-icon-mobile"></el-input>
+          <el-input style="margin-top: 20px" ref="userNameInput" size="large" v-model="loginObject.password"
+                    type="password"
                     placeholder="密码" prefix-icon="el-icon-lock"></el-input>
           <el-button type="primary" @click="doLogin">
             立即登录
           </el-button>
         </div>
-        <div class="dev-regist-box">
-          <span @click="gotoRegist">开发者注册</span>
+        <div class="more-action-box">
+          <div :to="'/devRegist'"><span>开发者注册</span></div>
+          <div><span @click="gotoRegist">忘记密码？</span></div>
         </div>
       </div>
     </div>
@@ -25,7 +27,7 @@
 </template>
 
 <script>
-import { login, getUserInfo } from '@/api/sysuser'
+import { getPermissionTree, getUserInfo, login } from '@/api/SystemConfigApi'
 import { setToken } from '@/utils/TokenUtil'
 import { setUserInfo } from '@/utils/UserInfoUtil'
 
@@ -33,9 +35,10 @@ export default {
   name: 'Login',
   data () {
     return {
-      backgroundImage: '~@/assets/login-back.jpg',
-      phone: '',
-      password: ''
+      loginObject: {
+        phone: '17317539623',
+        password: '12345678'
+      }
     }
   },
   methods: {
@@ -43,18 +46,21 @@ export default {
       if (this.phone === '' || this.password === '') {
         this.$message.error('用户名密码不能为空')
       } else {
-        login({
-          phone: this.phone,
-          password: this.password
-        }).then(res => {
+        login(this.loginObject).then(res => {
           // 获取用户信息
           setToken(res.data)
           getUserInfo().then(result => {
             if (result.status) {
               setUserInfo(result.data)
-              this.$message.success('登录成功')
+              getPermissionTree().then(pRest => {
+                this.$store.commit('setMenuPermission', pRest.data.menus)
+                this.$store.commit('setButtonPermission', pRest.data.button)
+                window.sessionStorage.setItem('permissions', JSON.stringify(pRest.data))
+                this.$message.success('登录成功')
+              })
+              // 获取用户所有权限
               window.sessionStorage.setItem('activePath', 'dashBoard')
-              this.$router.push('/')
+              this.$router.push('/permissionManage')
             }
           })
         })
@@ -73,7 +79,7 @@ export default {
 <style lang="scss" scoped>
 .login-container {
   height: 100vh;
-  background: url("~@/assets/login-back.jpg") center center fixed no-repeat;
+  background: url("~@/assets/login/login-back.jpg") center center fixed no-repeat;
   background-size: cover;
 
   .login-box {
@@ -126,10 +132,12 @@ export default {
         }
       }
 
-      .dev-regist-box {
+      .more-action-box {
         margin-top: 20px;
         font-size: 12px;
         color: #c8c9cc;
+        display: flex;
+        justify-content: space-between;
 
         span {
           cursor: pointer;
