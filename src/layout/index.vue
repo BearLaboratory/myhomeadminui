@@ -22,7 +22,7 @@
         <div class="user-info-box">
           <div class="doc-box" @click="gotoDoc">
             <i class="el-icon-s-flag"></i>
-            <span style="margin-left: 5px">技术文档</span>
+            <span>技术文档</span>
           </div>
           <div class="avatar-box">
             <el-avatar size="large" :src="userInfo.avatar"></el-avatar>
@@ -149,7 +149,7 @@ export default {
       this.$router.push('/login')
     },
     gotoDoc () {
-      window.location.href = 'https://myhome.dengyi.pro'
+      window.open('https://www.baidu.com')
     }
   }
 }
@@ -194,9 +194,10 @@ export default {
           margin-right: 20px;
           font-size: 14px;
           cursor: pointer;
+          color: #909399;
 
           span {
-            margin-right: 5px;
+            margin-left: 5px;
           }
         }
 
