@@ -21,21 +21,21 @@
       <div class="main-header-info">
         <div class="user-info-box">
           <div class="doc-box" @click="gotoDoc">
-            <span>技术文档</span>
             <i class="el-icon-s-flag"></i>
+            <span style="margin-left: 5px">技术文档</span>
           </div>
-          <div class="user-name-box">{{ 123 }}</div>
-          <el-avatar size="medium"
-                     src="123"></el-avatar>
-
-          <el-dropdown trigger="click" @command="doLogout">
+          <div class="avatar-box">
+            <el-avatar size="large" :src="userInfo.avatar"></el-avatar>
+            <el-dropdown trigger="click" @command="doLogout">
               <span class="el-dropdown-link">
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-school" command="logout">退出系统</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-user-solid" command="my">我的</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-delete-solid" command="logout">退出</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
         </div>
       </div>
     </el-header>
@@ -107,6 +107,8 @@
 </template>
 
 <script>
+import { getUserInfo } from '@/utils/UserInfoUtil'
+
 export default {
   name: 'index',
   data () {
@@ -115,14 +117,16 @@ export default {
       firstActivePath: '',
       lastActivePath: '',
       firstMenus: [],
-      secondMenus: []
+      secondMenus: [],
+      userInfo: {}
     }
   },
   mounted () {
     // 加载sessionstorage中的用户信息及权限信息
     const parseObj = JSON.parse(window.sessionStorage.getItem('permissions'))
-    console.log('加载------', parseObj)
     this.firstMenus = parseObj.menus
+    this.firstActivePath = this.firstMenus[0].routerPath
+    this.userInfo = getUserInfo()
   },
   methods: {
     /**
@@ -196,14 +200,15 @@ export default {
           }
         }
 
-        .user-name-box {
-          margin-right: 10px;
-          font-size: 14px;
-        }
+        .avatar-box {
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
-        .el-dropdown {
-          margin-left: 5px;
-          margin-right: 10px;
+          .el-dropdown {
+            margin-left: 5px;
+            margin-right: 10px;
+          }
         }
 
       }
@@ -213,6 +218,7 @@ export default {
 
   .sub-aside {
     background-color: #FFFFFF;
+    border-top: solid 5px #f6f8f9;
 
     .sub-aside-menu {
       border-right: 0;
