@@ -4,7 +4,7 @@
       <div class="main-header-logo-box"><span>MyHome</span></div>
       <div class="main-header-menu-box">
         <el-menu
-          :default-active="firstActivePath"
+          :default-active="$store.state.firstActivePath"
           class="main-header-menu"
           mode="horizontal"
           background-color="#FFFFFF"
@@ -12,7 +12,7 @@
           active-text-color="#FFFFFF"
           router
         >
-          <el-menu-item :index="menu.routerPath" v-for="menu in firstMenus" :key="menu.id"
+          <el-menu-item :index="menu.routerPath" v-for="menu in $store.state.menuPermission" :key="menu.id"
                         @click="firstMenuClick(menu)">
             {{ menu.routerName }}
           </el-menu-item>
@@ -25,13 +25,13 @@
             <span>技术文档</span>
           </div>
           <div class="avatar-box">
-            <el-avatar size="large" :src="userInfo.avatar"></el-avatar>
+            <el-avatar size="large" :src="$store.state.userInfo.avatar"></el-avatar>
             <el-dropdown trigger="click" @command="doLogout">
               <span class="el-dropdown-link">
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item icon="el-icon-user-solid" command="my">我的</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-user-solid" command="myspace">我的</el-dropdown-item>
                 <el-dropdown-item icon="el-icon-delete-solid" command="logout">退出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -41,26 +41,27 @@
     </el-header>
 
     <el-container>
-      <el-aside :width="collapse?'64px':'200px'" class="sub-aside">
+      <el-aside :width="$store.state.collapse?'64px':'200px'" class="sub-aside">
         <!--菜单-->
         <el-menu
-          :default-active="lastActivePath"
+          :default-active="$store.state.lastActivePath"
           class="sub-aside-menu"
           background-color="#FFFFFF"
           text-color="#000000"
           active-text-color="#fff"
           :unique-opened="true"
-          :collapse="collapse"
+          :collapse="$store.state.collapse"
           router
           :collapse-transition="false"
         >
-          <el-submenu :index="secondMenu.routerPath" v-for="secondMenu in secondMenus" :key="secondMenu.id">
+          <el-submenu :index="secondMenu.routerPath" v-for="secondMenu in $store.state.secondMenus"
+                      :key="secondMenu.id">
             <template slot="title">
               <i :class="secondMenu.routerIcon"></i>
               <span>{{ secondMenu.routerName }}</span>
             </template>
             <el-menu-item :index="lastMenu.routerPath" v-for="lastMenu in secondMenu.children" :key="lastMenu.id"
-                          @click="secondMenuClick(lastMenu)">
+                          @click="$store.commit('setLastActivePath',lastMenu.routerPath) ">
               <span slot="title">{{ lastMenu.routerName }}</span>
             </el-menu-item>
           </el-submenu>
@@ -85,8 +86,9 @@
         <div class="sub-header">
           <!--缩小-->
           <div>
-            <i :class="collapse?'el-icon-s-unfold':'el-icon-s-fold'" style="font-size: 20px;cursor: pointer"
-               @click="collapse=!collapse"></i>
+            <i :class="$store.state.collapse?'el-icon-s-unfold':'el-icon-s-fold'"
+               style="font-size: 20px;cursor: pointer"
+               @click="$store.commit('setCollapse',!$store.state.collapse)"></i>
           </div>
           <div class="sub-header-breadcrumb">
             <transition name="fade-transform" mode="out-in">
@@ -107,26 +109,12 @@
 </template>
 
 <script>
-import { getUserInfo } from '@/utils/UserInfoUtil'
-
 export default {
   name: 'index',
   data () {
     return {
-      collapse: false,
-      firstActivePath: '',
-      lastActivePath: '',
-      firstMenus: [],
-      secondMenus: [],
-      userInfo: {}
+      collapse: false
     }
-  },
-  mounted () {
-    // 加载sessionstorage中的用户信息及权限信息
-    const parseObj = JSON.parse(window.sessionStorage.getItem('permissions'))
-    this.firstMenus = parseObj.menus
-    this.firstActivePath = this.firstMenus[0].routerPath
-    this.userInfo = getUserInfo()
   },
   methods: {
     /**
@@ -134,19 +122,22 @@ export default {
      * @param menuData
      */
     firstMenuClick (menuData) {
-      this.secondMenus = menuData.children
-      this.firstActivePath = menuData.routerPath
-    },
-    secondMenuClick (lastMenuData) {
-      this.lastActivePath = lastMenuData.routerPath
-      // 存session
-      window.sessionStorage.setItem('lastActivePath', lastMenuData.routerPath)
+      this.$store.commit('setFirstActivePath', menuData.routerPath)
+      this.$store.commit('setSecondMenus', menuData.children)
+      const lastActivePath = this.secondMenus[0].children.length > 0 ? (this.secondMenus[0].children)[0].routerPath : this.secondMenus[0].routerPath
+      this.$store.commit('setLastActivePath', lastActivePath)
     },
     doLogout (command) {
-      // 清空session
-      window.sessionStorage.clear()
-      // 重定向到登录页
-      this.$router.push('/login')
+      switch (command) {
+        case 'logout':
+          // 重定向到登录页
+          this.$store.replaceState({})
+          window.sessionStorage.clear()
+          this.$router.push('/login')
+          break
+        default:
+          console.log('参数错误')
+      }
     },
     gotoDoc () {
       window.open('https://www.baidu.com')

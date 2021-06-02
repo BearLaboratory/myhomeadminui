@@ -91,23 +91,6 @@ export default {
         margin-top: 60px;
       }
 
-      .login-input-box {
-        margin-top: 40px;
-        padding-left: 20px;
-        padding-right: 20px;
-
-        .el-input {
-          width: 350px
-        }
-
-        .el-button {
-          margin-top: 40px;
-          height: 48px;
-          width: 350px;
-          font-size: 14px;
-        }
-      }
-
       .dev-regist-box {
         margin-top: 20px;
         font-size: 12px;

@@ -4,7 +4,6 @@ import Login from '@/views/Login'
 
 import DevRegist from '@/views/DevRegist'
 import DashBoard from '@/views/innerpage/DashBoard'
-// import { getToken } from '@/utils/TokenUtil'
 import ProductManage from '@/views/innerpage/ProductManage'
 import DeviceManage from '@/views/innerpage/DeviceManage'
 import AppVersionManage from '@/views/innerpage/AppVersionManage'
@@ -14,7 +13,6 @@ import 'nprogress/nprogress.css'
 import UserManage from '@/views/system-page/UserManage'
 import RoleManage from '@/views/system-page/RoleManage'
 import PermissionManage from '@/views/system-page/PermissionManage'
-import { getToken } from '@/utils/TokenUtil'
 
 Vue.use(VueRouter)
 
@@ -106,7 +104,7 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     // 如果不是去登录页，则判断是否登录
-    if (getToken() == null) {
+    if (!window.sessionStorage.getItem('userToken')) {
       // 未登录,跳转到登录页
       next('/login')
     } else {

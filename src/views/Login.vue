@@ -9,7 +9,8 @@
           <span>MyHome | 后台系统</span>
         </div>
         <div class="login-input-box">
-          <el-input size="large" v-model="loginObject.phone" placeholder="手机号码" prefix-icon="el-icon-mobile"></el-input>
+          <el-input size="large" v-model="loginObject.phone" placeholder="手机号码"
+                    prefix-icon="el-icon-mobile"></el-input>
           <el-input style="margin-top: 20px" ref="userNameInput" size="large" v-model="loginObject.password"
                     type="password"
                     placeholder="密码" prefix-icon="el-icon-lock"></el-input>
@@ -18,8 +19,12 @@
           </el-button>
         </div>
         <div class="more-action-box">
-          <div :to="'/devRegist'"><span>开发者注册</span></div>
-          <div><span @click="gotoRegist">忘记密码？</span></div>
+          <div>
+            <span>开发者注册</span>
+          </div>
+          <div>
+            <span>忘记密码</span>
+          </div>
         </div>
       </div>
     </div>
@@ -28,8 +33,6 @@
 
 <script>
 import { getPermissionTree, getUserInfo, login } from '@/api/SystemConfigApi'
-import { setToken } from '@/utils/TokenUtil'
-import { setUserInfo } from '@/utils/UserInfoUtil'
 
 export default {
   name: 'Login',
@@ -47,29 +50,17 @@ export default {
         this.$message.error('用户名密码不能为空')
       } else {
         login(this.loginObject).then(res => {
-          // 获取用户信息
-          setToken(res.data)
+          this.$store.commit('setUserToken', res.data)
           getUserInfo().then(result => {
             if (result.status) {
-              setUserInfo(result.data)
+              this.$store.commit('setUserInfo', result.data)
               getPermissionTree().then(pRest => {
                 this.$store.commit('setMenuPermission', pRest.data.menus)
                 this.$store.commit('setButtonPermission', pRest.data.button)
-                window.sessionStorage.setItem('permissions', JSON.stringify(pRest.data))
-                const loading = this.$loading({ // 声明一个loading对象
-                  lock: true, // 是否锁屏
-                  text: '正在加载...', // 加载动画的文字
-                  spinner: 'el-icon-loading', // 引入的loading图标
-                  background: 'rgba(0, 0, 0, 0.3)', // 背景颜色
-                  target: '.sub-main', // 需要遮罩的区域
-                  body: true,
-                  customClass: 'mask' // 遮罩层新增类名
-                })
-                setTimeout(() => { // 设定定时器，超时5S后自动关闭遮罩层，避免请求失败时，遮罩层一直存在的问题
-                  loading.close() // 关闭遮罩层
-                  window.sessionStorage.setItem('activePath', 'dashBoard')
-                  this.$router.push('/permissionManage')
-                }, 1500)
+                this.$store.commit('setFirstActivePath', pRest.data.menus[0].routerPath)
+                this.$store.commit('setSecondMenus', pRest.data.menus[0].children)
+                this.$store.commit('setLastActivePath', (pRest.data.menus[0].children)[0].children ? (pRest.data.menus[0].children)[0].children.routerPath : pRest.data.menus[0].children[0].routerPath)
+                this.$router.push('/')
               })
             }
           })
@@ -87,6 +78,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+a {
+  text-decoration: none;
+  color: #c8c9cc;
+}
+
+.router-link-active {
+  text-decoration: none;
+}
+
 .login-container {
   height: 100vh;
   background: url("~@/assets/login/login-back.jpg") center center fixed no-repeat;
@@ -120,6 +121,7 @@ export default {
       font-weight: 400;
       color: #A7ACFE;
       text-align: center;
+      padding: 0 40px;
 
       .login-header {
         margin-top: 60px;
@@ -127,17 +129,11 @@ export default {
 
       .login-input-box {
         margin-top: 60px;
-        padding-left: 20px;
-        padding-right: 20px;
-
-        .el-input {
-          width: 350px
-        }
 
         .el-button {
-          margin-top: 60px;
+          margin-top: 40px;
           height: 48px;
-          width: 350px;
+          width: 100%;
           font-size: 14px;
         }
       }
@@ -148,10 +144,6 @@ export default {
         color: #c8c9cc;
         display: flex;
         justify-content: space-between;
-
-        span {
-          cursor: pointer;
-        }
       }
     }
   }

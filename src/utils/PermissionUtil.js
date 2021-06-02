@@ -12,7 +12,7 @@ export function hasPermission (roles, route) {
 }
 
 // 检查是否有权限点
-export function hasPermissionPoint (point) {
+export function hasButtonPermission (point) {
   const points = store.getters.roles.points
   if (points) {
     return points.some(it => it.toLowerCase() === point.toLowerCase())

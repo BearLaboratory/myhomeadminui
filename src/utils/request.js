@@ -1,9 +1,8 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
-import { getToken } from '@/utils/TokenUtil'
 import router from '@/router'
+import store from '@/store'
 
-// create an axios instance
 const instance = axios.create({
   baseURL: 'http://127.0.0.1:9000/backend/',
   timeout: 8000
@@ -11,27 +10,20 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
   config => {
-    config.headers.token = getToken()
-    // Do something before request is sent
-    // if (store.getters.token) {
-    //   config.headers.token = getToken()
-    // }
+    config.headers.token = store.state.userToken
     return config
   },
   error => {
-    // Do something with request error
-    Message.error('对不起，出错了')
+    Message.error('对不起，请求出错了!')
     console.log(error) // for debug
     Promise.reject(error)
   }
 )
 
-// respone interceptor
+// 响应
 instance.interceptors.response.use(
   response => {
     const realRes = response.data
-    // console.log('响应拦截器：', realRes)
-
     const status = realRes.status
     const message = realRes.message
     const code = realRes.code
@@ -48,36 +40,15 @@ instance.interceptors.response.use(
           duration: 3 * 1000
         })
       }
-
       return Promise.reject(new Error('业务不能被执行'))
     }
-    // // debugger
-    // // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-    // if (errCode === 50008 || errCode === 50012 || errCode === 50014) {
-    //   Message({
-    //     message: '你已被登出，请重新登录',
-    //     type: 'error',
-    //     duration: 5 * 1000
-    //   })
-    //   store.dispatch('FedLogOut').then(() => {
-    //     location.reload() // 为了重新实例化vue-router对象 避免bug
-    //   })
-    //   return Promise.reject(new Error('token expired'))
-    // } else if (errCode !== ok) {
-    //   Message({
-    //     message: res.message,
-    //     type: 'error',
-    //     duration: 5 * 1000
-    //   })
-    // }
-    // return response
   },
   error => {
-    console.log('err' + error) // for debug
+    console.log('err' + error)
     Message({
       message: error.message,
       type: 'error',
-      duration: 3 * 1000
+      duration: 1500
     })
     return Promise.reject(error)
   }

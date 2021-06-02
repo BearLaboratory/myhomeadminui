@@ -146,7 +146,6 @@
 <script>
 import { productList } from '@/api/product'
 import { addDevice, devicePage } from '@/api/device'
-import { getUserInfo } from '@/utils/UserInfoUtil'
 
 export default {
   name: 'DroductManage',
@@ -171,7 +170,7 @@ export default {
   },
   methods: {
     loadPageData () {
-      this.pageParam.devUserId = getUserInfo().id
+      this.pageParam.devUserId = this.$store.state.userInfo.id
       devicePage(this.pageParam).then(res => {
         this.pageData = res.data
       })
