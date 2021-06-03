@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="device-container">
     <div class="table-header-box">
       <div style="display: flex;align-items: center">
         <el-input v-model="pageParam.roleName" size="mini" placeholder="请输入角色名称" clearable/>
@@ -113,156 +113,15 @@
       </div>
     </el-dialog>
   </div>
+
 </template>
 
 <script>
-import { addOrUpdateRoleApi, delRoleApi, totalPermissionTreeApi, rolePageQueryApi } from '@/api/SystemConfigApi'
-
 export default {
-  name: 'RoleManage',
-  data () {
-    return {
-      defaultProps: {
-        label: 'routerName'
-      },
-      pageParam: {
-        pageNumber: 1,
-        pageSize: 10,
-        roleName: ''
-      },
-      pageResult: {},
-      addDialogFormVisible: false,
-      newObj: {},
-      permissionTree: [],
-      addRules: {
-        roleName: [
-          {
-            required: true,
-            message: '请填写角色名称',
-            trigger: 'blur'
-          }
-        ],
-        roleDesc: [
-          {
-            required: true,
-            message: '请填写角色描述',
-            trigger: 'blur'
-          }
-        ],
-        permIds: [
-          {
-            required: true,
-            message: '请选择权限',
-            trigger: 'change'
-          }
-        ]
-      }
-    }
-  },
-  created () {
-    this.doPageQuery()
-    this.loadPermissionTree()
-  },
-  methods: {
-    loadPermissionTree () {
-      totalPermissionTreeApi().then(res => {
-        this.permissionTree = res.data
-      })
-    },
-    doPageQuery () {
-      rolePageQueryApi(this.pageParam).then(res => {
-        this.pageResult = res.data
-      })
-    },
-    pageNumberChange (pno) {
-      this.pageParam.pageNumber = pno
-      this.doPageQuery()
-    },
-    conditionPage () {
-      this.pageParam.pageNumber = 1
-      this.doPageQuery()
-    },
-    showAddDia () {
-      this.newObj = {}
-      this.addDialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs.addForm.clearValidate()
-        this.$refs.tree.setCheckedKeys([])
-      })
-    },
-    saveOrUpdateRole () {
-      this.newObj.permIds = this.$refs.tree.getCheckedKeys()
-      this.$refs.addForm.validate((valid) => {
-        if (valid) {
-          // 校验权限
-          if (this.newObj.permIds && this.newObj.permIds.length !== 0) {
-            addOrUpdateRoleApi(this.newObj).then(res => {
-              if (res.status) {
-                this.newObj = {}
-                this.addDialogFormVisible = false
-                this.$nextTick(() => {
-                  this.$refs.tree.setCheckedKeys([])
-                })
-                this.doPageQuery()
-              }
-            })
-          } else {
-            this.$message.warning('请选择角色对应的权限')
-          }
-        }
-      })
-    },
-    showUpdate (rowData) {
-      this.newObj = rowData
-      this.addDialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs.tree.setCheckedKeys(rowData.permIds)
-      })
-    },
-    delPermission (rowData) {
-      this.$confirm('是否确认删除角色？', '提示', {
-        type: 'error'
-      }).then(() => {
-        delRoleApi(rowData).then(res => {
-          if (res.status) {
-            this.$message.success('删除角色成功')
-            this.doPageQuery()
-          } else {
-            this.$message.error(res.message)
-          }
-        })
-      })
-    }
-  }
+  name: 'CategoryManage'
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
-.table-header-box {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 10px;
-  padding-bottom: 20px;
-
-}
-
-.pagination-box {
-  padding-top: 30px;
-  padding-bottom: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.el-table .warning-row {
-  background: oldlace;
-}
-
-.el-table .success-row {
-  background: #f0f9eb;
-}
-
-.el-table {
-  position: initial;
-}
 </style>

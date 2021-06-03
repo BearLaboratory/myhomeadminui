@@ -110,7 +110,7 @@
         <el-form-item label="路由名" prop="routerName">
           <el-input v-model="newObj.routerName" autocomplete="off" placeholder="请填写前端显示的菜单名"/>
         </el-form-item>
-        <el-form-item label="路由图标" prop="routerIcon">
+        <el-form-item label="路由图标" v-if="false">
           <el-input v-model="newObj.routerIcon" autocomplete="off" placeholder="请填写ElementUI中存在的图标"/>
         </el-form-item>
         <el-form-item label="路由Path" prop="routerPath">
@@ -148,7 +148,7 @@
         <el-form-item label="路由名" prop="routerName">
           <el-input v-model="newSubObj.routerName" autocomplete="off" placeholder="请填写前端显示的菜单名"/>
         </el-form-item>
-        <el-form-item label="路由图标" prop="routerIcon">
+        <el-form-item label="路由图标">
           <el-input v-model="newSubObj.routerIcon" autocomplete="off" placeholder="请填写ElementUI中存在的图标"/>
         </el-form-item>
         <el-form-item label="路由Path" prop="routerPath">
@@ -179,7 +179,7 @@
         <el-form-item label="路由名" prop="routerName">
           <el-input v-model="oldObj.routerName" autocomplete="off" placeholder="请填写前端显示的菜单名"/>
         </el-form-item>
-        <el-form-item label="路由图标" prop="routerIcon">
+        <el-form-item label="路由图标" v-if="false">
           <el-input v-model="oldObj.routerIcon" autocomplete="off" placeholder="请填写ElementUI中存在的图标"/>
         </el-form-item>
         <el-form-item label="路由Path" prop="routerPath">
@@ -195,7 +195,7 @@
       </div>
     </el-dialog>
     <!--一子权限修改-->
-    <el-dialog title="新增子修改" :visible.sync="updateSubDialogFormVisible">
+    <el-dialog title="子权限修改" :visible.sync="updateSubDialogFormVisible">
       <el-form
         ref="updateSubForm"
         :model="oldObj"
@@ -419,7 +419,7 @@ export default {
 <style lang="scss" scoped>
 .device-container {
   background-color: #FFFFFF !important;
-  padding: 10px;
+  padding: 0 10px;
 
   .table-header-box {
     display: flex;

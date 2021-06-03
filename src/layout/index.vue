@@ -124,8 +124,8 @@ export default {
     firstMenuClick (menuData) {
       this.$store.commit('setFirstActivePath', menuData.routerPath)
       this.$store.commit('setSecondMenus', menuData.children)
-      const lastActivePath = this.secondMenus[0].children.length > 0 ? (this.secondMenus[0].children)[0].routerPath : this.secondMenus[0].routerPath
-      this.$store.commit('setLastActivePath', lastActivePath)
+      // const lastActivePath = this.secondMenus[0].children.length > 0 ? (this.secondMenus[0].children)[0].routerPath : this.secondMenus[0].routerPath
+      // this.$store.commit('setLastActivePath', lastActivePath)
     },
     doLogout (command) {
       switch (command) {

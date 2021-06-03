@@ -13,6 +13,7 @@ import 'nprogress/nprogress.css'
 import UserManage from '@/views/system-page/UserManage'
 import RoleManage from '@/views/system-page/RoleManage'
 import PermissionManage from '@/views/system-page/PermissionManage'
+import CategoryManage from '@/views/device-page/CategoryManage'
 
 Vue.use(VueRouter)
 
@@ -52,33 +53,61 @@ const routes = [
         name: 'AppVersionManage',
         meta: { title: 'APP版本管理' },
         component: AppVersionManage
-      },
+      }
+    ]
+  },
+  {
+    path: '/appConfig',
+    name: 'Layout',
+    component: Layout,
+    children: [
       {
-        path: '/deviceManage',
+        path: '/appConfig/appAnalyse/deviceManage',
         name: 'DeviceManage',
         meta: { title: '设备管理' },
         component: DeviceManage
-      },
-      {
-        path: '/userManage',
-        name: 'UserManage',
-        meta: { title: '人员管理' },
-        component: UserManage
-      },
-      {
-        path: '/roleManage',
-        name: 'RoleManage',
-        meta: { title: '角色管理' },
-        component: RoleManage
-      },
-      {
-        path: '/PermissionManage',
-        name: 'PermissionManage',
-        meta: { title: '权限管理' },
-        component: PermissionManage
       }
     ]
   }, {
+    path: '/deviceManage',
+    name: 'Layout',
+    component: Layout,
+    children: [
+      {
+        path: '/deviceManage/categoryManage/categoryManage',
+        name: 'CategoryManage',
+        meta: { title: '设备分类' },
+        component: CategoryManage
+      }
+    ]
+  },
+  {
+    path: '/systemConfig',
+    name: 'Layout',
+    component: Layout,
+    children:
+      [
+        {
+          path: '/systemConfig/userRolePermission/userManage',
+          name: 'UserManage',
+          meta: { title: '人员管理' },
+          component: UserManage
+        },
+        {
+          path: '/systemConfig/userRolePermission/roleManage',
+          name: 'RoleManage',
+          meta: { title: '角色管理' },
+          component: RoleManage
+        },
+        {
+          path: '/systemConfig/userRolePermission/PermissionManage',
+          name: 'PermissionManage',
+          meta: { title: '权限管理' },
+          component: PermissionManage
+        }
+      ]
+  },
+  {
     path: '/devRegist',
     name: 'DevRegist',
     meta: { title: '开发者注册' },
@@ -86,8 +115,10 @@ const routes = [
   },
   {
     path: '*',
-    redirect: '/404',
-    hidden: true
+    redirect:
+      '/404',
+    hidden:
+      true
   }
 ]
 

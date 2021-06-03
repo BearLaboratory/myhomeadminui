@@ -1,8 +1,8 @@
 <template>
-  <div class="device-container">
+  <div class="page-container">
     <div class="table-header-box">
       <div style="display: flex;align-items: center">
-        <el-input v-model="pageParam.phone" size="mini" placeholder="请输入手机号" clearable />
+        <el-input v-model="pageParam.phone" size="mini" placeholder="请输入手机号" clearable/>
         <el-input
           v-model="pageParam.nickName"
           size="mini"
@@ -99,13 +99,13 @@
         class="demo-ruleForm"
       >
         <el-form-item label="姓名" prop="nickName">
-          <el-input v-model="newObj.nickName" autocomplete="off" />
+          <el-input v-model="newObj.nickName" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
-          <el-input v-model="newObj.phone" autocomplete="off" />
+          <el-input v-model="newObj.phone" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="公司邮箱" prop="email">
-          <el-input v-model="newObj.email" autocomplete="off" />
+          <el-input v-model="newObj.email" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="密码" :prop="newObj.id?'':'password'">
           <el-input
@@ -346,24 +346,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.device-container {
-  background-color: #FFFFFF;
-  padding: 10px;
+.table-header-box {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 20px;
 
-  .table-header-box {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 10px;
-    padding-bottom: 20px;
+}
 
-  }
-
-  .pagination-box {
-    padding-top: 30px;
-    padding-bottom: 20px;
-    display: flex;
-    justify-content: center;
-  }
+.pagination-box {
+  padding-top: 30px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .el-table .warning-row {
