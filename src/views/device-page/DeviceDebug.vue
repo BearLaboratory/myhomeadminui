@@ -2,13 +2,13 @@
   <div class="page-container">
     <div class="table-header-box">
       <div style="display: flex;align-items: center">
-        <el-input v-model="pageParam.name" size="mini" placeholder="请输入分类名" clearable/>
+        <el-input v-model="pageParam.roleName" size="mini" placeholder="请输入分类名" clearable/>
         <el-button size="mini" type="primary" style="margin-left: 10px" icon="el-icon-search" @click="doPageQuery">
           搜索
         </el-button>
       </div>
       <div class="header-option-box">
-        <el-button icon="el-icon-plus" type="warning" size="mini" @click="showAddDia">添加分类</el-button>
+        <el-button icon="el-icon-plus" type="warning" size="mini" @click="showAddDia">添加设备</el-button>
       </div>
     </div>
 
@@ -149,7 +149,7 @@
 import { categoryAddOrUpdateApi, categoryPageApi } from '@/api/DeviceManage'
 
 export default {
-  name: 'CategoryManage',
+  name: 'DeviceDebug',
   data () {
     return {
       pageResult: {},

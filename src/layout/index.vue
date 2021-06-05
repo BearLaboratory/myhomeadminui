@@ -65,20 +65,6 @@
               <span slot="title">{{ lastMenu.routerName }}</span>
             </el-menu-item>
           </el-submenu>
-
-          <!--            <div >-->
-          <!--              <div v-if="secondMenu.children">-->
-
-          <!--              </div>-->
-          <!--              &lt;!&ndash;没有子菜单&ndash;&gt;-->
-          <!--              <div v-else>-->
-          <!--                <el-menu-item :index="lastMenu.routerPath" @click="secondMenuClick(lastMenu)"-->
-          <!--                              v-for="lastMenu in secondMenu.children" :key="lastMenu.id">-->
-          <!--                  <i class="el-icon-data-board"></i>-->
-          <!--                  <span slot="title">{{ lastMenu.routerName }}</span>-->
-          <!--                </el-menu-item>-->
-          <!--              </div>-->
-          <!--            </div>-->
         </el-menu>
       </el-aside>
       <el-main>
@@ -91,17 +77,19 @@
                @click="$store.commit('setCollapse',!$store.state.collapse)"></i>
           </div>
           <div class="sub-header-breadcrumb">
-            <transition name="fade-transform" mode="out-in">
-              <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb separator="/">
+              <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+              <transition name="fade-transform" mode="out-in">
                 <el-breadcrumb-item>{{ $route.meta.title }}</el-breadcrumb-item>
-              </el-breadcrumb>
-            </transition>
+              </transition>
+            </el-breadcrumb>
           </div>
         </div>
         <!--  主view      -->
         <div class="main-view">
-          <router-view></router-view>
+          <transition name="fade-transform" mode="out-in">
+            <router-view></router-view>
+          </transition>
         </div>
       </el-main>
     </el-container>

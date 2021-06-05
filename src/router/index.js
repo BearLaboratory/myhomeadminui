@@ -14,6 +14,8 @@ import UserManage from '@/views/system-page/UserManage'
 import RoleManage from '@/views/system-page/RoleManage'
 import PermissionManage from '@/views/system-page/PermissionManage'
 import CategoryManage from '@/views/device-page/CategoryManage'
+import DeviceList from '@/views/device-page/DeviceList'
+import DeviceDebug from '@/views/device-page/DeviceDebug'
 
 Vue.use(VueRouter)
 
@@ -78,6 +80,16 @@ const routes = [
         name: 'CategoryManage',
         meta: { title: '设备分类' },
         component: CategoryManage
+      }, {
+        path: '/deviceManage/deviceList/deviceList',
+        name: 'deviceList',
+        meta: { title: '设备列表' },
+        component: DeviceList
+      }, {
+        path: '/deviceManage/developManage/deviceDebug',
+        name: 'deviceDebug',
+        meta: { title: '设备调试' },
+        component: DeviceDebug
       }
     ]
   },
@@ -85,6 +97,7 @@ const routes = [
     path: '/systemConfig',
     name: 'Layout',
     component: Layout,
+    redirect: '/systemConfig/userRolePermission/userManage',
     children:
       [
         {

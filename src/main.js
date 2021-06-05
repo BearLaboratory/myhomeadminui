@@ -3,6 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
+import './styles/index.scss'
+
+import JsonViewer from 'vue-json-viewer'
+
+Vue.use(JsonViewer)
 
 Vue.config.productionTip = false
 

@@ -104,7 +104,7 @@
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="newObj.phone" autocomplete="off"/>
         </el-form-item>
-        <el-form-item label="公司邮箱" prop="email">
+        <el-form-item label="邮箱" prop="email">
           <el-input v-model="newObj.email" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="密码" :prop="newObj.id?'':'password'">
