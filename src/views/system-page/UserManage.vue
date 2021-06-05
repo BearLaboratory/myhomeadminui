@@ -50,6 +50,14 @@
         show-overflow-tooltip
       />
       <el-table-column
+        label="账号类型"
+        align="center"
+      >
+        <template slot-scope="scope">
+          {{ scope.row.isDeveloper ? '开发者' : '平台管理员' }}
+        </template>
+      </el-table-column>
+      <el-table-column
         label="角色"
         align="center"
       >
@@ -147,7 +155,7 @@
 
 <script>
 
-import { addOrUpdateUserApi, delUserApi, userPageApi, roleListApi } from '@/api/SystemConfigApi'
+import { addOrUpdateUserApi, delUserApi, roleListApi, userPageApi } from '@/api/SystemConfigApi'
 
 export default {
   name: 'UserManage',
