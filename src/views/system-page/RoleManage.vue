@@ -90,7 +90,7 @@
             :show-word-limit="true"
             placeholder="请将角色所拥有的权限详细描述"
             maxlength="250"
-            :rows="5"
+            :rows="8"
           />
         </el-form-item>
 
