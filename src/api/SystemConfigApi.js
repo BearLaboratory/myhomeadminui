@@ -6,9 +6,14 @@ export const login = data => createAPI('/sysUser/login', 'post', data)
 export const getUserInfo = data => createAPI('/sysUser/getUserInfo', 'get', data)
 // 插叙权限树
 export const getPermissionTree = data => createAPI('/sysUser/getPermissionTree', 'get', data)
-export const addOrUpdateUserApi = data => createAPI('/sysUser/getPermissionTree', 'get', data)
-export const delUserApi = data => createAPI('/sysUser/getPermissionTree', 'get', data)
-export const pageQueryApi = data => createAPI('/sysUser/getPermissionTree', 'get', data)
+
+// ---------------------用户相关----------------------------
+// 用户分页查询
+export const userPageApi = data => createAPI('/sysUser/page', 'get', data)
+// 新增或修改系统用户
+export const addOrUpdateUserApi = data => createAPI('/sysUser/addOrUpdateUser', 'post', data)
+// 删除用户
+export const delUserApi = data => createAPI('/sysUser/delUser', 'post', data)
 
 // -----------------角色相关----------------------
 // 条件分页查询

@@ -30,7 +30,7 @@ instance.interceptors.response.use(
     if (status) {
       return response.data
     } else {
-      if (code === 11009) {
+      if (code === 10002 || code === 10003) {
         // token失效需要重新登录
         router.push('/login')
       } else {

@@ -4,7 +4,7 @@
       <div style="display: flex;align-items: center">
         <el-input v-model="pageParam.phone" size="mini" placeholder="请输入手机号" clearable/>
         <el-input
-          v-model="pageParam.nickName"
+          v-model="pageParam.name"
           size="mini"
           placeholder="请输入姓名"
           clearable
@@ -32,7 +32,7 @@
         show-overflow-tooltip
       />
       <el-table-column
-        prop="nickName"
+        prop="name"
         label="姓名"
         align="center"
         width="180"
@@ -98,8 +98,8 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="姓名" prop="nickName">
-          <el-input v-model="newObj.nickName" autocomplete="off"/>
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="newObj.name" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="newObj.phone" autocomplete="off"/>
@@ -111,7 +111,7 @@
           <el-input
             v-model="newObj.password"
             autocomplete="off"
-            :placeholder="newObj.id?'修改密码时，为空则表示不修改密码，密码长度6位-11位':'密码长度6位-11位'"
+            :placeholder="newObj.id?'修改密码时，为空则表示不修改密码，密码长度8位-11位':'密码长度8位-11位'"
             :show-password="true"
           />
         </el-form-item>
@@ -119,7 +119,7 @@
           <el-input
             v-model="newObj.rePassword"
             autocomplete="off"
-            :placeholder="newObj.id?'修改密码时，为空则表示不修改密码，密码长度6位-11位':'密码长度6位-11位'"
+            :placeholder="newObj.id?'修改密码时，为空则表示不修改密码，密码长度8位-11位':'密码长度8位-11位'"
             :show-password="true"
           />
         </el-form-item>
@@ -147,7 +147,7 @@
 
 <script>
 
-import { addOrUpdateUserApi, delUserApi, pageQueryApi, roleListApi } from '@/api/SystemConfigApi'
+import { addOrUpdateUserApi, delUserApi, userPageApi, roleListApi } from '@/api/SystemConfigApi'
 
 export default {
   name: 'UserManage',
@@ -159,13 +159,13 @@ export default {
         pageNumber: 1,
         pageSize: 10,
         phone: '',
-        nickName: ''
+        name: ''
       },
       pageResult: {},
       addDialogFormVisible: false,
       newObj: {},
       addRules: {
-        nickName: [
+        name: [
           {
             required: true,
             message: '请填写姓名',
@@ -212,7 +212,7 @@ export default {
           {
             min: 6,
             max: 11,
-            message: '长度在 6 到 11 个字符',
+            message: '长度在 8 到 11 个字符',
             trigger: 'blur'
           }
         ],
@@ -225,7 +225,7 @@ export default {
           {
             min: 6,
             max: 11,
-            message: '长度在 6 到 11 个字符',
+            message: '长度在 8 到 11 个字符',
             trigger: 'blur'
           }
         ],
@@ -250,7 +250,7 @@ export default {
       })
     },
     doPageQuery () {
-      pageQueryApi(this.pageParam).then(res => {
+      userPageApi(this.pageParam).then(res => {
         this.pageResult = res.data
       })
     },
@@ -276,7 +276,7 @@ export default {
             // 修改
             if (this.newObj.password) {
               // 如果新增了输入了密码就要校验
-              if (this.newObj.password.length >= 6 && this.newObj.password.length <= 11) {
+              if (this.newObj.password.length >= 8 && this.newObj.password.length <= 11) {
                 if (this.newObj.password === this.newObj.rePassword) {
                   addOrUpdateUserApi(this.newObj).then(res => {
                     if (res.status) {
@@ -290,7 +290,7 @@ export default {
                   this.$message.warning('两次填写的密码不一致，请重新填写')
                 }
               } else {
-                this.$message.warning('密码长度6到11位')
+                this.$message.warning('密码长度8到11位')
               }
             } else {
               addOrUpdateUserApi(this.newObj).then(res => {
