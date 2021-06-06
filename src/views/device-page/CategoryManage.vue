@@ -177,6 +177,7 @@ export default {
       this.doPageQuery()
     },
     saveOrUpdate () {
+      this.newObj.dataFormat = JSON.stringify(this.newObj.dataFormat)
       categoryAddOrUpdateApi(this.newObj).then(res => {
         this.$message.success('操作成功')
         this.addDialogFormVisible = false

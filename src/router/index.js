@@ -36,7 +36,19 @@ const routes = [
     children: []
   },
   {
-    path: '/appConfig',
+    path: '/appManage',
+    name: 'Layout',
+    component: Layout,
+    children: [
+      {
+        path: '/appConfig/appAnalyse/deviceManage',
+        name: 'DeviceManage',
+        meta: { title: '设备管理' }
+      }
+    ]
+  },
+  {
+    path: '/operation',
     name: 'Layout',
     component: Layout,
     children: [
@@ -50,6 +62,7 @@ const routes = [
     path: '/deviceManage',
     name: 'Layout',
     component: Layout,
+    redirect: '/deviceManage/categoryManage/categoryManage',
     children: [
       {
         path: '/deviceManage/categoryManage/categoryManage',
