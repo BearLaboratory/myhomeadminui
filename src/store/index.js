@@ -5,6 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // 屏幕宽度
+    screenWidth: window.innerWidth,
     // 用户token
     userToken: '',
     // 用户信息
@@ -23,6 +25,11 @@ export default new Vuex.Store({
     collapse: false
   },
   mutations: {
+    setScreenWidth(store, width) {
+      store.screenWidth = width
+      // 如果宽度小于1300就折叠
+      store.collapse = width <= 1300
+    },
     /**
      * 保存用户token
      * @param store

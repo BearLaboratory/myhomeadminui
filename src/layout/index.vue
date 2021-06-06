@@ -99,6 +99,7 @@
           <transition name='fade-transform' mode='out-in'>
             <router-view></router-view>
           </transition>
+          <copy-right></copy-right>
         </div>
       </el-main>
     </el-container>
@@ -234,6 +235,7 @@ export default {
     .main-view {
       padding: 20px 10px;
       background-color: #f6f8f9;
+      overflow-x: hidden;
     }
 
   }

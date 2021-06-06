@@ -13,6 +13,7 @@ import CategoryManage from '@/views/device-page/CategoryManage'
 import DeviceList from '@/views/device-page/DeviceList'
 import DeviceDebug from '@/views/device-page/DeviceDebug'
 import UserList from '@/views/operation-page/UserList'
+import DashBoard from '@/views/DashBoard'
 
 Vue.use(VueRouter)
 
@@ -34,7 +35,14 @@ const routes = [
     name: 'Layout',
     component: Layout,
     redirect: '/dashBoard',
-    children: []
+    children: [
+      {
+        path: '/dashBoard',
+        name: 'DashBoard',
+        meta: { title: '信息汇总' },
+        component: DashBoard
+      }
+    ]
   },
   {
     path: '/appManage',

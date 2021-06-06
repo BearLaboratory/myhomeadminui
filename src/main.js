@@ -4,8 +4,14 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import './styles/index.scss'
+import echarts from 'echarts'
+import CopyRight from '@/components/CopyRight'
 
 import JsonViewer from 'vue-json-viewer'
+
+Vue.component('CopyRight', CopyRight)
+
+Vue.prototype.$echarts = echarts
 
 Vue.use(JsonViewer)
 
