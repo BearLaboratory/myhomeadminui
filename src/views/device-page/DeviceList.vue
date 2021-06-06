@@ -4,16 +4,16 @@
       <div style='display: flex;align-items: center'>
         <el-row :gutter='10'>
           <el-col :span='6'>
-            <el-input v-model='pageParam.roleName' size='mini' placeholder='请输入设备名' clearable />
+            <el-input v-model='pageParam.name' size='mini' placeholder='请输入设备名' clearable />
           </el-col>
           <el-col :span='6'>
-            <el-select v-model='pageParam.online' placeholder='请选择在线状态' size='mini'>
+            <el-select v-model='pageParam.online' placeholder='请选择在线状态' size='mini' clearable>
               <el-option label='在线' :value='true'></el-option>
               <el-option label='离线' :value='false'></el-option>
             </el-select>
           </el-col>
           <el-col :span='6'>
-            <el-select v-model='pageParam.publish' placeholder='请选择发布状态' size='mini'>
+            <el-select v-model='pageParam.publish' placeholder='请选择发布状态' size='mini' clearable>
               <el-option label='已发布' :value='true'></el-option>
               <el-option label='未发布' :value='false'></el-option>
             </el-select>
@@ -40,6 +40,7 @@
       <el-table-column
         prop='id'
         label='ID'
+        width='180'
         align='center'
         show-overflow-tooltip
       />
