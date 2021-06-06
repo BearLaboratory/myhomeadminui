@@ -47,7 +47,7 @@
         width="300"
       >
         <template slot-scope="scope">
-          <json-viewer :value="scope.row.dataFormat" style="line-height: 18px;"></json-viewer>
+          <json-viewer :value="JSON.parse(scope.row.dataFormat)" style="line-height: 18px;"></json-viewer>
         </template>
       </el-table-column>
       <el-table-column
@@ -70,7 +70,7 @@
         <template slot-scope="scope">
           <div style="display: flex;justify-content: center">
             <el-button size="mini" type="warning" @click="showUpdate(scope.row)">修改</el-button>
-            <el-button size="mini" type="danger" @click="delPermission(scope.row)">删除</el-button>
+            <el-button size="mini" type="danger" @click="deleteCategory(scope.row)">删除</el-button>
           </div>
         </template>
       </el-table-column>
@@ -146,7 +146,7 @@
 </template>
 
 <script>
-import { categoryAddOrUpdateApi, categoryPageApi } from '@/api/DeviceManage'
+import { categoryAddOrUpdateApi, categoryPageApi, delCategoryApi } from '@/api/DeviceManage'
 
 export default {
   name: 'CategoryManage',
@@ -165,6 +165,7 @@ export default {
   methods: {
     doPageQuery () {
       categoryPageApi(this.pageParam).then(res => {
+        console.log(res.data)
         this.pageResult = res.data
       })
     },
@@ -186,6 +187,12 @@ export default {
       console.log(rowData)
       this.newObj = rowData
       this.addDialogFormVisible = true
+    },
+    deleteCategory (rowData) {
+      delCategoryApi(rowData).then(res => {
+        this.$message.success('分类删除成功')
+        this.doPageQuery()
+      })
     }
   }
 }

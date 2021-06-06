@@ -3,10 +3,6 @@ import VueRouter from 'vue-router'
 import Login from '@/views/Login'
 
 import DevRegist from '@/views/DevRegist'
-import DashBoard from '@/views/innerpage/DashBoard'
-import ProductManage from '@/views/innerpage/ProductManage'
-import DeviceManage from '@/views/innerpage/DeviceManage'
-import AppVersionManage from '@/views/innerpage/AppVersionManage'
 import Layout from '@/layout'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -26,37 +22,18 @@ const routes = [
     meta: { title: '登录' },
     component: Login
   },
-  // {
-  //   path: '/404',
-  //   meta: { title: '404' },
-  //   component: () => import('@/views/error-page/404'),
-  //   hidden: true
-  // },
+  {
+    path: '/404',
+    meta: { title: '404' },
+    component: () => import('@/views/error-page/404'),
+    hidden: true
+  },
   {
     path: '/',
     name: 'Layout',
     component: Layout,
     redirect: '/dashBoard',
-    children: [
-      {
-        path: '/dashBoard',
-        name: 'DashBoard',
-        meta: { title: '仪表台' },
-        component: DashBoard
-      },
-      {
-        path: '/productManage',
-        name: 'ProductManage',
-        meta: { title: '产品管理' },
-        component: ProductManage
-      },
-      {
-        path: '/appVersionManage',
-        name: 'AppVersionManage',
-        meta: { title: 'APP版本管理' },
-        component: AppVersionManage
-      }
-    ]
+    children: []
   },
   {
     path: '/appConfig',
@@ -66,8 +43,7 @@ const routes = [
       {
         path: '/appConfig/appAnalyse/deviceManage',
         name: 'DeviceManage',
-        meta: { title: '设备管理' },
-        component: DeviceManage
+        meta: { title: '设备管理' }
       }
     ]
   }, {
