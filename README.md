@@ -5,6 +5,8 @@
 [后端项目地址](https://github.com/BearLaboratory/myhome-backend)
 
 ## 页面预览
+1. 系统管理页面
+   ![Alt text](https://github.com/BearLaboratory/myhome-adminui/blob/master/pics/systemconfig.png)
 
 
 
@@ -30,7 +32,7 @@ npm install
 npm run serve
 ```
 
-###4. 生产环境打包
+### 4. 生产环境打包
 ```
 npm run build
 ```
