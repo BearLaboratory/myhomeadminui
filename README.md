@@ -2,7 +2,7 @@
 
 此项目为开源智能家居系统的后台管理页面，项目的开发形式其实不太适合个人进行开发和部署！因为我在进行整个项目的架构时考虑到项目的易用性，将很多服务进行了比较细的拆分。
 
-(后端项目地址)[https://github.com/BearLaboratory/myhome-backend]
+[后端项目地址](https://github.com/BearLaboratory/myhome-backend)
 
 ## 页面预览
 
