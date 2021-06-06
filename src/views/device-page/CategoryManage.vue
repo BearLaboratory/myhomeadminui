@@ -47,7 +47,7 @@
         width='300'
       >
         <template slot-scope='scope'>
-          <json-viewer :value='JSON.parse(scope.row.dataFormat)' style='line-height: 18px;'></json-viewer>
+          <json-viewer :value='scope.row.dataFormat' style='line-height: 18px;'></json-viewer>
         </template>
       </el-table-column>
       <el-table-column
@@ -126,13 +126,12 @@
           </el-col>
         </el-form-item>
         <el-form-item label='通讯协议' prop='roleDesc'>
-          <el-input
+          <vue-json-editor
             v-model='newObj.dataFormat'
-            type='textarea'
-            :show-word-limit='true'
-            placeholder='请输入通讯协议内容'
-            maxlength='250'
-            :rows='5'
+            :showBtns='false'
+            :mode="'code'"
+            lang='zh'
+
           />
         </el-form-item>
       </el-form>
@@ -147,6 +146,7 @@
 
 <script>
 import { categoryAddOrUpdateApi, categoryPageApi, delCategoryApi } from '@/api/DeviceManage'
+import vueJsonEditor from 'vue-json-editor'
 
 export default {
   name: 'CategoryManage',
@@ -159,6 +159,10 @@ export default {
       rules: {}
     }
   },
+  components: {
+    vueJsonEditor
+  },
+
   created() {
     this.doPageQuery()
   },
@@ -170,14 +174,18 @@ export default {
       })
     },
     showAddDia() {
+      this.newObj = {}
       this.addDialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.addForm.clearValidate()
+      })
     },
     pageNumberChange(e) {
       this.pageParam.pageNumber = e
       this.doPageQuery()
     },
     saveOrUpdate() {
-      this.newObj.dataFormat = JSON.stringify(this.newObj.dataFormat)
+      // this.newObj.dataFormat = JSON.stringify(this.newObj.dataFormat)
       categoryAddOrUpdateApi(this.newObj).then(res => {
         this.$message.success('操作成功')
         this.addDialogFormVisible = false
