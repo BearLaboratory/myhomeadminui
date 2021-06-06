@@ -12,6 +12,7 @@ import PermissionManage from '@/views/system-page/PermissionManage'
 import CategoryManage from '@/views/device-page/CategoryManage'
 import DeviceList from '@/views/device-page/DeviceList'
 import DeviceDebug from '@/views/device-page/DeviceDebug'
+import UserList from '@/views/operation-page/UserList'
 
 Vue.use(VueRouter)
 
@@ -53,9 +54,10 @@ const routes = [
     component: Layout,
     children: [
       {
-        path: '/appConfig/appAnalyse/deviceManage',
-        name: 'DeviceManage',
-        meta: { title: '设备管理' }
+        path: '/operationManage/userAnalyse/userList',
+        name: 'UserList',
+        meta: { title: '用户列表' },
+        component: UserList
       }
     ]
   }, {

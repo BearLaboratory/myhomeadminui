@@ -1,24 +1,32 @@
 <template>
-  <div class="login-container">
-    <div class="login-box">
-      <div class="login-left">
-        <img src="../assets/login/inner-login.png" height="295" width="363"/>
+  <div class='login-container'>
+    <div class='login-box'>
+      <div class='login-left'>
+        <img src='../assets/login/inner-login.png' height='295' width='363' />
       </div>
-      <div class="login-right">
-        <div class="login-header">
+      <div class='login-right'>
+        <div class='login-header'>
           <span>MyHome | 后台系统</span>
         </div>
-        <div class="login-input-box">
-          <el-input size="large" v-model="loginObject.phone" placeholder="手机号码"
-                    prefix-icon="el-icon-mobile"></el-input>
-          <el-input style="margin-top: 20px" ref="userNameInput" size="large" v-model="loginObject.password"
-                    type="password"
-                    placeholder="密码" prefix-icon="el-icon-lock"></el-input>
-          <el-button type="primary" @click="doLogin">
+        <div class='login-input-box'>
+          <el-input
+            size='large'
+            v-model='loginObject.phone'
+            placeholder='手机号码'
+            prefix-icon='el-icon-mobile'></el-input>
+          <el-input
+            style='margin-top: 20px'
+            ref='userNameInput'
+            size='large'
+            v-model='loginObject.password'
+            type='password'
+            placeholder='密码'
+            prefix-icon='el-icon-lock'></el-input>
+          <el-button type='primary' @click='doLogin'>
             立即登录
           </el-button>
         </div>
-        <div class="more-action-box">
+        <div class='more-action-box'>
           <div>
             <span>开发者注册</span>
           </div>
@@ -36,7 +44,7 @@ import { getPermissionTree, getUserInfo, login } from '@/api/SystemConfigApi'
 
 export default {
   name: 'Login',
-  data () {
+  data() {
     return {
       loginObject: {
         phone: '17317539623',
@@ -45,7 +53,7 @@ export default {
     }
   },
   methods: {
-    doLogin () {
+    doLogin() {
       if (this.phone === '' || this.password === '') {
         this.$message.error('用户名密码不能为空')
       } else {
@@ -70,14 +78,14 @@ export default {
     /**
      * 跳转开发者注册
      */
-    gotoRegist () {
+    gotoRegist() {
       this.$router.push('/devRegist')
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 
 a {
   text-decoration: none;

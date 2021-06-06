@@ -9,7 +9,7 @@ export default {
     const s = date.getSeconds()
     return Y + M + D + h + m + s
   },
-  transformTozTreeFormat: function (sNodes) {
+  transformTozTreeFormat: function(sNodes) {
     var i, l
     var r = []
     var tmpMap = {}
@@ -30,7 +30,7 @@ export default {
     }
     return r
   },
-  nodeChildren: function (node, newChildren) {
+  nodeChildren: function(node, newChildren) {
     if (typeof newChildren !== 'undefined') {
       node.children = newChildren
     }

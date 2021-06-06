@@ -77,7 +77,7 @@ export const createDownLoadAPI = (url, method, data) => {
     config.data = data
   }
   config.transformRequest = [
-    function (data) {
+    function(data) {
       let ret = ''
       for (const it in data) {
         ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
@@ -101,7 +101,7 @@ export const createFormAPI = (url, method, data) => {
   }
   config.responseType = 'json'
   config.transformRequest = [
-    function (data) {
+    function(data) {
       let ret = ''
       for (const it in data) {
         ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
@@ -125,7 +125,7 @@ export const createImgAPI = (url, method, data) => {
   }
   config.responseType = 'blob'
   config.transformRequest = [
-    function (data) {
+    function(data) {
       let ret = ''
       for (const it in data) {
         ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
@@ -149,7 +149,7 @@ export const createFileAPI = (url, method, data) => {
   }
   config.responseType = 'arraybuffer'
   config.transformRequest = [
-    function (data) {
+    function(data) {
       let ret = ''
       for (const it in data) {
         ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'

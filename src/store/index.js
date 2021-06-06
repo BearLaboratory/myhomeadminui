@@ -28,7 +28,7 @@ export default new Vuex.Store({
      * @param store
      * @param token
      */
-    setUserToken (store, token) {
+    setUserToken(store, token) {
       store.userToken = token
       window.sessionStorage.setItem('userToken', token)
     },
@@ -37,7 +37,7 @@ export default new Vuex.Store({
      * @param store
      * @param userInfo
      */
-    setUserInfo (store, userInfo) {
+    setUserInfo(store, userInfo) {
       store.userInfo = userInfo
     },
     /**
@@ -45,7 +45,7 @@ export default new Vuex.Store({
      * @param store
      * @param menus
      */
-    setMenuPermission (store, menus) {
+    setMenuPermission(store, menus) {
       store.menuPermission = menus
     },
     /**
@@ -53,19 +53,19 @@ export default new Vuex.Store({
      * @param store
      * @param buttons
      */
-    setButtonPermission (store, buttons) {
+    setButtonPermission(store, buttons) {
       store.buttonPermission = buttons
     },
-    setFirstActivePath (store, path) {
+    setFirstActivePath(store, path) {
       store.firstActivePath = path
     },
-    setLastActivePath (store, path) {
+    setLastActivePath(store, path) {
       store.lastActivePath = path
     },
-    setSecondMenus (store, menus) {
+    setSecondMenus(store, menus) {
       store.secondMenus = menus
     },
-    setCollapse (state, flag) {
+    setCollapse(state, flag) {
       state.collapse = flag
     }
   },

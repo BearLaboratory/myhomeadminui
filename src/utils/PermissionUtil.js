@@ -1,7 +1,7 @@
 import store from '@/store'
 
 // 检查是否有权限
-export function hasPermission (roles, route) {
+export function hasPermission(roles, route) {
   if (roles.menus && route.name) {
     return roles.menus.some(role => {
       return route.name.toLowerCase() === role.toLowerCase()
@@ -12,7 +12,7 @@ export function hasPermission (roles, route) {
 }
 
 // 检查是否有权限点
-export function hasButtonPermission (point) {
+export function hasButtonPermission(point) {
   const points = store.getters.roles.points
   if (points) {
     return points.some(it => it.toLowerCase() === point.toLowerCase())

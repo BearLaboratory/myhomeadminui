@@ -1,21 +1,24 @@
 <template>
-  <div class="login-container">
-    <div class="login-box">
-      <div class="login-left">
-        <img src="../assets/login/inner-login.png" height="295" width="363"/>
+  <div class='login-container'>
+    <div class='login-box'>
+      <div class='login-left'>
+        <img src='../assets/login/inner-login.png' height='295' width='363' />
       </div>
-      <div class="login-right">
-        <div class="login-header">
+      <div class='login-right'>
+        <div class='login-header'>
           <span>MyHome | 开发者注册</span>
         </div>
-        <div class="login-input-box">
-          <el-input size="large" v-model="regitData.phone" placeholder="手机号码" prefix-icon="el-icon-mobile"></el-input>
-          <el-input size="large" v-model="regitData.email" placeholder="邮箱" prefix-icon="el-icon-mobile"></el-input>
-          <el-input size="large" v-model="regitData.name" placeholder="昵称" prefix-icon="el-icon-mobile"></el-input>
-          <el-input size="large" v-model="regitData.password" placeholder="密码（长度6位以上）"
-                    prefix-icon="el-icon-mobile"></el-input>
-          <el-input size="large" v-model="rePassword" placeholder="重复密码" prefix-icon="el-icon-mobile"></el-input>
-          <el-button type="primary" @click="doRegist">
+        <div class='login-input-box'>
+          <el-input size='large' v-model='regitData.phone' placeholder='手机号码' prefix-icon='el-icon-mobile'></el-input>
+          <el-input size='large' v-model='regitData.email' placeholder='邮箱' prefix-icon='el-icon-mobile'></el-input>
+          <el-input size='large' v-model='regitData.name' placeholder='昵称' prefix-icon='el-icon-mobile'></el-input>
+          <el-input
+            size='large'
+            v-model='regitData.password'
+            placeholder='密码（长度6位以上）'
+            prefix-icon='el-icon-mobile'></el-input>
+          <el-input size='large' v-model='rePassword' placeholder='重复密码' prefix-icon='el-icon-mobile'></el-input>
+          <el-button type='primary' @click='doRegist'>
             立即注册
           </el-button>
         </div>
@@ -28,14 +31,14 @@ import { devRegist } from '@/api/sysuser'
 
 export default {
   name: 'DevRegist',
-  data () {
+  data() {
     return {
       regitData: {},
       rePassword: ''
     }
   },
   methods: {
-    doRegist () {
+    doRegist() {
       devRegist(this.regitData).then(res => {
         if (res.status) {
           this.$message.success('注册成功，请登录')
@@ -47,7 +50,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .login-container {
   height: 100vh;
   background: url("~@/assets/login/login-back.jpg") center center fixed no-repeat;
