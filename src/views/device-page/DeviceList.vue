@@ -26,9 +26,19 @@
       />
       <el-table-column
         prop="name"
-        label="分类名"
+        label="设备名"
         align="center"
       />
+      <el-table-column
+        label="在线"
+        align="center"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.online?'success':'warning' " effect="dark">{{ scope.row.online ? '在线' : '离线' }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="type"
         label="主类型"
@@ -42,20 +52,18 @@
         show-overflow-tooltip
       />
       <el-table-column
-        prop="dataFormat"
-        label="通讯协议内容"
-        width="300"
-      >
-        <template slot-scope="scope">
-          <json-viewer :value="scope.row.dataFormat" style="line-height: 18px;"></json-viewer>
-        </template>
-      </el-table-column>
-      <el-table-column
         prop="createTime"
-        label="创建时间"
+        label="是否发布"
         align="center"
         show-overflow-tooltip
-      />
+      >
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.publish?'success':'warning' " effect="dark">{{
+              scope.row.publish ? '已发布' : '未发布'
+            }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="updateTime"
         label="更新时间"
@@ -69,8 +77,12 @@
       >
         <template slot-scope="scope">
           <div style="display: flex;justify-content: center">
-            <el-button size="mini" type="warning" @click="showUpdate(scope.row)">修改</el-button>
-            <el-button size="mini" type="danger" @click="delPermission(scope.row)">删除</el-button>
+            <el-button size="mini" type="warning" v-if="!scope.row.publish" @click="publishDevice(scope.row)">发布
+            </el-button>
+            <el-button size="mini" type="warning" v-if="!scope.row.publish" @click="showUpdate(scope.row)">修改
+            </el-button>
+            <el-button size="mini" type="danger" v-if="!scope.row.publish" @click="delPermission(scope.row)">删除
+            </el-button>
           </div>
         </template>
       </el-table-column>
@@ -146,7 +158,7 @@
 </template>
 
 <script>
-import { categoryAddOrUpdateApi, categoryPageApi } from '@/api/DeviceManage'
+import { categoryAddOrUpdateApi, devicePageApi, publishDeviceApi } from '@/api/DeviceManage'
 
 export default {
   name: 'DeviceList',
@@ -164,7 +176,7 @@ export default {
   },
   methods: {
     doPageQuery () {
-      categoryPageApi(this.pageParam).then(res => {
+      devicePageApi(this.pageParam).then(res => {
         this.pageResult = res.data
       })
     },
@@ -186,6 +198,12 @@ export default {
       console.log(rowData)
       this.newObj = rowData
       this.addDialogFormVisible = true
+    },
+    publishDevice (rowData) {
+      publishDeviceApi(rowData).then(res => {
+        this.$message.success('发布设备成功')
+        this.doPageQuery()
+      })
     }
   }
 }
