@@ -40,13 +40,10 @@
           style='width: 100%;'
           :header-cell-style="{background: '#F6F8FB'}"
           size='mini'
+          height='300'
           highlight-current-row
           @row-click='handRowClick'
         >
-          <el-table-column
-            type='selection'
-            width='55'>
-          </el-table-column>
           <el-table-column
             prop='id'
             label='ID'
@@ -55,8 +52,8 @@
             show-overflow-tooltip
           />
           <el-table-column
-            prop='name'
-            label='设备名'
+            prop='categoryName'
+            label='分类名'
             align='center'
           />
           <el-table-column
@@ -70,16 +67,10 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop='type'
-            label='主类型'
-            align='center'
-            show-overflow-tooltip
-          />
-          <el-table-column
             prop='deviceSecret'
             label='secret'
             align='center'
-            width='300'
+            width='250'
             show-overflow-tooltip
           />
           <el-table-column
@@ -102,34 +93,73 @@
             show-overflow-tooltip
           />
         </el-table>
-      </el-col>
-    </el-row>
-    <el-row :gutter='20' class='debug-box'>
-      <el-col :span='12'>
-        <div>
-          <span>标准控制报文</span>
-        </div>
-        <div class='sample-box'>
-          <json-viewer
-            :value='clickRowData.dataFormat?clickRowData.dataFormat:{}'
-            style='line-height: 18px;'></json-viewer>
-        </div>
-      </el-col>
-      <el-col :span='12'>
-        <div>
-          <span>下发控制报文</span>
-        </div>
-        <div class='sample-box'>123</div>
-        <div>
-          <el-button type='success'>下发命令</el-button>
+        <div v-if='pageResult.pages>1' class='pagination-box'>
+          <el-pagination
+            background
+            :page-size='5'
+            layout='prev, pager, next'
+            :total='pageResult.total'
+            @current-change='pageNumberChange'
+          />
         </div>
       </el-col>
     </el-row>
+    <div class='debug-box'>
+      <el-row :gutter='20'>
+        <el-col :span='8'>
+          <div class='one-side-box'></div>
+          <div class='title-box'>
+            <span>标准命令</span>
+          </div>
+          <div class='sample-box'>
+            <json-viewer
+              :value='clickRowData.dataFormat?clickRowData.dataFormat:{}'
+              style='line-height: 18px;'></json-viewer>
+          </div>
+          <div class='btn-box'>
+            <el-button type='primary' @click='doStartDebug'>{{ startDebug ? '停止调试' : '开始调试' }}</el-button>
+          </div>
+        </el-col>
+        <transition name='el-zoom-in-top' mode='out-in'>
+          <el-col :span='8' v-show='startDebug'>
+            <div class='one-side-box'></div>
+            <div class='title-box'>
+              <span>设备响应</span>
+            </div>
+            <div class='sample-box'>
+              <json-viewer
+                :value='deviceReport'
+                style='line-height: 18px;'></json-viewer>
+            </div>
+          </el-col>
+        </transition>
+
+        <transition name='el-zoom-in-top' mode='out-in'>
+          <el-col :span='8' v-show='startDebug'>
+            <div class='title-box'>
+              <span>下发命令</span>
+            </div>
+            <div class='sample-box'>
+              <vue-json-editor
+                v-model='realCommand'
+                :showBtns='false'
+                :mode="'code'"
+                lang='zh'
+              />
+            </div>
+            <div class='btn-box'>
+              <el-button type='success' style='background: #19be6b' @click='doDebugDevice'>下发命令</el-button>
+            </div>
+          </el-col>
+        </transition>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script>
 import { devicePageApi } from '@/api/DeviceManage'
+import vueJsonEditor from 'vue-json-editor'
 
 export default {
   name: 'DeviceDebug',
@@ -142,11 +172,17 @@ export default {
       newObj: {},
       addDialogFormVisible: false,
       rules: {},
-      clickRowData: {}
+      clickRowData: {},
+      deviceReport: {},
+      realCommand: {},
+      startDebug: false
     }
   },
   created() {
     this.doPageQuery()
+  },
+  components: {
+    vueJsonEditor
   },
   methods: {
     doPageQuery() {
@@ -160,7 +196,27 @@ export default {
     },
     handRowClick(rowData) {
       this.clickRowData = rowData
-      console.log(rowData)
+      this.realCommand = rowData.dataFormat
+    },
+    doStartDebug() {
+      if (this.clickRowData.dataFormat) {
+        this.startDebug = !this.startDebug
+      } else {
+        this.$notify({
+          title: '提示',
+          message: '请选中一行设备再进行调试',
+          type: 'warning',
+          duration: 1500
+        })
+      }
+    },
+    doDebugDevice() {
+      this.$notify({
+        title: '提示',
+        message: '控制命令下发成功',
+        type: 'success',
+        duration: 2000
+      })
     }
   }
 }
@@ -173,12 +229,32 @@ export default {
   padding: 0 10px;
 }
 
+.pagination-box {
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
 .debug-box {
-  margin-top: 20px;
+  margin-top: 30px;
+
+  .title-box {
+    background-color: #409EFF;
+    padding: 10px 10px;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-bottom: solid 1px #c8c9cc;
+  }
 
   .sample-box {
     background-color: #FFFFFF;
     height: 200px;
+  }
+
+  .btn-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
   }
 }
 

@@ -8,9 +8,9 @@
         <img class='pic-404__child right' src='@/assets/404_images/404_cloud.png' alt='404'>
       </div>
       <div class='bullshit'>
-        <div class='bullshit__oops'>哎呦！</div>
+        <div class='bullshit__oops'>404</div>
         <div class='bullshit__info'>
-          <a style='color:#20a0ff' href='https://www.palmap.cn/' target='_blank'>图聚</a>
+          <a style='color:#20a0ff' href='/' target='_blank'>MyHome 最具极客范的开源智能家居系统</a>
         </div>
         <div class='bullshit__headline'>{{ message }}</div>
         <div class='bullshit__info'>
@@ -169,7 +169,7 @@ export default {
   .bullshit {
     position: relative;
     float: left;
-    width: 300px;
+    width: 400px;
     padding: 30px 0;
     overflow: hidden;
 
@@ -203,7 +203,7 @@ export default {
       line-height: 21px;
       color: grey;
       opacity: 0;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       animation-name: slideUp;
       animation-duration: 0.5s;
       animation-delay: 0.2s;

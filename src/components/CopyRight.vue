@@ -25,13 +25,13 @@ export default {
 <style lang='scss' scoped>
 .main-box {
   position: absolute;
-  bottom: 20px;
+  bottom: 10px;
   text-align: center;
 
   span {
     color: #c8c9cc;
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 

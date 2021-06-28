@@ -13,6 +13,7 @@
     </div>
 
     <el-table
+      size='mini'
       :data='pageResult.records'
       style='width: 100%;'
       height='650'
@@ -169,7 +170,6 @@ export default {
   methods: {
     doPageQuery() {
       categoryPageApi(this.pageParam).then(res => {
-        console.log(res.data)
         this.pageResult = res.data
       })
     },
@@ -185,7 +185,7 @@ export default {
       this.doPageQuery()
     },
     saveOrUpdate() {
-      // this.newObj.dataFormat = JSON.stringify(this.newObj.dataFormat)
+      this.newObj.dataFormat = JSON.stringify(this.newObj.dataFormat)
       categoryAddOrUpdateApi(this.newObj).then(res => {
         this.$message.success('操作成功')
         this.addDialogFormVisible = false
@@ -198,9 +198,11 @@ export default {
       this.addDialogFormVisible = true
     },
     deleteCategory(rowData) {
-      delCategoryApi(rowData).then(res => {
-        this.$message.success('分类删除成功')
-        this.doPageQuery()
+      this.$confirm('是否确认删除设备分类', '提示', { type: 'warning' }).then(() => {
+        delCategoryApi({ id: rowData.id }).then(res => {
+          this.$message.success('分类删除成功')
+          this.doPageQuery()
+        })
       })
     }
   }
@@ -209,4 +211,10 @@ export default {
 
 <style lang='scss' scoped>
 
+.pagination-box {
+  padding-top: 30px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
 </style>

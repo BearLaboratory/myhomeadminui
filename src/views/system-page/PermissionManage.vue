@@ -46,6 +46,7 @@
         prop='permissionName'
         label='权限名(后端接口)'
         align='center'
+        width='180'
         show-overflow-tooltip
       />
       <el-table-column
@@ -58,6 +59,7 @@
         prop='routerPath'
         label='路由path'
         align='center'
+        width='180'
         show-overflow-tooltip
       />
       <el-table-column
@@ -65,7 +67,11 @@
         label='路由图标'
         align='center'
         show-overflow-tooltip
-      />
+      >
+        <template slot-scope='scope'>
+          {{ scope.row.routerIcon ? scope.row.routerIcon : '-' }}
+        </template>
+      </el-table-column>
       <el-table-column
         prop='orderNo'
         label='序号'

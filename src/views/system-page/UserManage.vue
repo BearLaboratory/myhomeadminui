@@ -218,10 +218,10 @@ export default {
             trigger: 'blur'
           },
           {
-            min: 6,
+            min: 8,
             max: 11,
             message: '长度在 8 到 11 个字符',
-            trigger: 'blur'
+            trigger: ['blur', 'change']
           }
         ],
         rePassword: [
@@ -231,10 +231,10 @@ export default {
             trigger: 'blur'
           },
           {
-            min: 6,
+            min: 8,
             max: 11,
             message: '长度在 8 到 11 个字符',
-            trigger: 'blur'
+            trigger: ['blur', 'change']
           }
         ],
         roleId: [

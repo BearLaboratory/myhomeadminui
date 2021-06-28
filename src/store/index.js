@@ -15,10 +15,6 @@ export default new Vuex.Store({
     menuPermission: [],
     // 按钮权限数组
     buttonPermission: [],
-    // 第一级激活菜单标识
-    firstActivePath: '',
-    // 最后一级激活菜单标识
-    lastActivePath: '',
     // 已经被选中的二级菜单
     secondMenus: [],
     // 侧边菜单是否收起
@@ -62,12 +58,6 @@ export default new Vuex.Store({
      */
     setButtonPermission(store, buttons) {
       store.buttonPermission = buttons
-    },
-    setFirstActivePath(store, path) {
-      store.firstActivePath = path
-    },
-    setLastActivePath(store, path) {
-      store.lastActivePath = path
     },
     setSecondMenus(store, menus) {
       store.secondMenus = menus

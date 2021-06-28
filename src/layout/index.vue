@@ -4,7 +4,7 @@
       <div class='main-header-logo-box'><span>MyHome</span></div>
       <div class='main-header-menu-box'>
         <el-menu
-          :default-active='$store.state.firstActivePath'
+          :default-active='firstActivePath'
           class='main-header-menu'
           mode='horizontal'
           background-color='#FFFFFF'
@@ -25,11 +25,11 @@
         <div class='user-info-box'>
           <div class='doc-box' @click='gotoDoc'>
             <i class='el-icon-s-flag'></i>
-            <span>技术文档</span>
+            <span>在线文档</span>
           </div>
           <div class='avatar-box'>
             <el-avatar size='large' :src='$store.state.userInfo.avatar'></el-avatar>
-            <el-dropdown trigger='click' @command='doLogout'>
+            <el-dropdown trigger='click' @command='moreAction'>
               <span class='el-dropdown-link'>
                 <i class='el-icon-arrow-down el-icon--right'></i>
               </span>
@@ -43,65 +43,8 @@
       </div>
     </el-header>
 
-    <el-container>
-      <el-aside :width="$store.state.collapse?'64px':'200px'" class='sub-aside'>
-        <!--菜单-->
-        <el-menu
-          :default-active='$store.state.lastActivePath'
-          class='sub-aside-menu'
-          background-color='#FFFFFF'
-          text-color='#000000'
-          active-text-color='#fff'
-          :unique-opened='true'
-          :collapse='$store.state.collapse'
-          router
-          :collapse-transition='false'
-        >
-          <el-submenu
-            :index='secondMenu.routerPath'
-            v-for='secondMenu in $store.state.secondMenus'
-            :key='secondMenu.id'>
-            <template slot='title'>
-              <i :class='secondMenu.routerIcon'></i>
-              <span>{{ secondMenu.routerName }}</span>
-            </template>
-            <el-menu-item
-              :index='lastMenu.routerPath'
-              v-for='lastMenu in secondMenu.children'
-              :key='lastMenu.id'
-              @click="$store.commit('setLastActivePath',lastMenu.routerPath) ">
-              <span slot='title'>{{ lastMenu.routerName }}</span>
-            </el-menu-item>
-          </el-submenu>
-        </el-menu>
-      </el-aside>
-      <el-main>
-        <!--    面包屑导航    -->
-        <div class='sub-header'>
-          <!--缩小-->
-          <div>
-            <i
-              :class="$store.state.collapse?'el-icon-s-unfold':'el-icon-s-fold'"
-              style='font-size: 20px;cursor: pointer'
-              @click="$store.commit('setCollapse',!$store.state.collapse)"></i>
-          </div>
-          <div class='sub-header-breadcrumb'>
-            <el-breadcrumb separator='/'>
-              <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-              <transition name='fade-transform' mode='out-in'>
-                <el-breadcrumb-item>{{ $route.meta.title }}</el-breadcrumb-item>
-              </transition>
-            </el-breadcrumb>
-          </div>
-        </div>
-        <!--  主view      -->
-        <div class='main-view'>
-          <transition name='fade-transform' mode='out-in'>
-            <router-view></router-view>
-          </transition>
-          <copy-right></copy-right>
-        </div>
-      </el-main>
+    <el-container class='sub-layout'>
+      <router-view></router-view>
     </el-container>
   </el-container>
 </template>
@@ -120,12 +63,9 @@ export default {
      * @param menuData
      */
     firstMenuClick(menuData) {
-      this.$store.commit('setFirstActivePath', menuData.routerPath)
       this.$store.commit('setSecondMenus', menuData.children)
-      // const lastActivePath = this.secondMenus[0].children.length > 0 ? (this.secondMenus[0].children)[0].routerPath : this.secondMenus[0].routerPath
-      // this.$store.commit('setLastActivePath', lastActivePath)
     },
-    doLogout(command) {
+    moreAction(command) {
       switch (command) {
         case 'logout':
           // 重定向到登录页
@@ -138,7 +78,12 @@ export default {
       }
     },
     gotoDoc() {
-      window.open('https://www.baidu.com')
+      window.open('https://myhome.dengyi.pro')
+    }
+  },
+  computed: {
+    firstActivePath() {
+      return '/' + window.location.hash.split('/')[1]
     }
   }
 }
@@ -147,11 +92,13 @@ export default {
 <style lang='scss' scoped>
 .el-container {
   height: 100%;
+  background-color: #f6f8f9;
 
   .main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #FFFFFF;
 
     .main-header-logo-box {
       font-size: 20px;
@@ -206,38 +153,8 @@ export default {
 
   }
 
-  .sub-aside {
-    background-color: #FFFFFF;
-    border-top: solid 5px #f6f8f9;
-
-    .sub-aside-menu {
-      border-right: 0;
-    }
-
-  }
-
-  .el-main {
-    background-color: #f6f8f9;
-    padding: 0;
-
-    .sub-header {
-      height: 30px;
-      padding: 0 10px;
-      background-color: #f6f8f9;
-      display: flex;
-      align-items: center;
-
-      .sub-header-breadcrumb {
-        margin-left: 20px;
-      }
-    }
-
-    .main-view {
-      padding: 20px 10px;
-      background-color: #f6f8f9;
-      overflow-x: hidden;
-    }
-
+  .sub-layout {
+    padding-top: 10px;
   }
 }
 

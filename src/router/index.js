@@ -13,7 +13,7 @@ import CategoryManage from '@/views/device-page/CategoryManage'
 import DeviceList from '@/views/device-page/DeviceList'
 import DeviceDebug from '@/views/device-page/DeviceDebug'
 import UserList from '@/views/operation-page/UserList'
-import DashBoard from '@/views/DashBoard'
+import InnerLayout from '@/layout/InnerLayout'
 
 Vue.use(VueRouter)
 
@@ -24,100 +24,109 @@ const routes = [
     meta: { title: '登录' },
     component: Login
   },
-  {
-    path: '/404',
-    meta: { title: '404' },
-    component: () => import('@/views/error-page/404'),
-    hidden: true
-  },
+  // {
+  //   path: '/404',
+  //   meta: { title: '404' },
+  //   component: () => import('@/views/error-page/404'),
+  //   hidden: true
+  // },
   {
     path: '/',
     name: 'Layout',
     component: Layout,
-    redirect: '/dashBoard',
     children: [
+      // 运营管理
+      {
+        path: '/operationManage',
+        name: 'InnerLayout',
+        component: InnerLayout,
+        children: [
+          {
+            path: '/operationManage/userManage/userData',
+            name: 'UserList',
+            meta: { title: '用户数据' },
+            component: UserList
+          }, {
+            path: '/operationManage/userManage/userList',
+            name: 'UserList',
+            meta: { title: '用户列表' },
+            component: UserList
+          }
+        ]
+      },
+      // app管理
+      {
+        path: '/appManage',
+        name: 'InnerLayout',
+        component: InnerLayout,
+        children: [
+          {
+            path: '/appManage/appAnalyse/deviceManage',
+            name: 'DeviceManage',
+            meta: { title: 'APP管理' }
+          }
+        ]
+      },
+      // 设备管理
+      {
+        path: '/deviceManage',
+        name: 'InnerLayout',
+        component: InnerLayout,
+        redirect: '/deviceManage/categoryManage/categoryManage',
+        children: [
+          {
+            path: '/deviceManage/categoryManage/categoryManage',
+            name: 'CategoryManage',
+            meta: { title: '设备分类' },
+            component: CategoryManage
+          }, {
+            path: '/deviceManage/deviceList/deviceList',
+            name: 'deviceList',
+            meta: { title: '设备列表' },
+            component: DeviceList
+          }, {
+            path: '/deviceManage/developManage/deviceDebug',
+            name: 'deviceDebug',
+            meta: { title: '设备调试' },
+            component: DeviceDebug
+          }
+        ]
+      },
+      // 系统管理
+      {
+        path: '/systemManage',
+        name: 'InnerLayout',
+        component: InnerLayout,
+        redirect: '/systemManage/userRolePermission/userManage',
+        children:
+          [
+            {
+              path: '/systemManage/userRolePermission/userManage',
+              name: 'UserManage',
+              meta: { title: '人员管理' },
+              component: UserManage
+            },
+            {
+              path: '/systemManage/userRolePermission/roleManage',
+              name: 'RoleManage',
+              meta: { title: '角色管理' },
+              component: RoleManage
+            },
+            {
+              path: '/systemManage/userRolePermission/PermissionManage',
+              name: 'PermissionManage',
+              meta: { title: '权限管理' },
+              component: PermissionManage
+            }
+          ]
+      },
       {
         path: '/dashBoard',
         name: 'DashBoard',
         meta: { title: '信息汇总' },
-        component: DashBoard
+        component: () => import('@/views/dashboard/DashBoard')
       }
     ]
-  },
-  {
-    path: '/appManage',
-    name: 'Layout',
-    component: Layout,
-    children: [
-      {
-        path: '/appConfig/appAnalyse/deviceManage',
-        name: 'DeviceManage',
-        meta: { title: '设备管理' }
-      }
-    ]
-  },
-  {
-    path: '/operation',
-    name: 'Layout',
-    component: Layout,
-    children: [
-      {
-        path: '/operationManage/userAnalyse/userList',
-        name: 'UserList',
-        meta: { title: '用户列表' },
-        component: UserList
-      }
-    ]
-  }, {
-    path: '/deviceManage',
-    name: 'Layout',
-    component: Layout,
-    redirect: '/deviceManage/categoryManage/categoryManage',
-    children: [
-      {
-        path: '/deviceManage/categoryManage/categoryManage',
-        name: 'CategoryManage',
-        meta: { title: '设备分类' },
-        component: CategoryManage
-      }, {
-        path: '/deviceManage/deviceList/deviceList',
-        name: 'deviceList',
-        meta: { title: '设备列表' },
-        component: DeviceList
-      }, {
-        path: '/deviceManage/developManage/deviceDebug',
-        name: 'deviceDebug',
-        meta: { title: '设备调试' },
-        component: DeviceDebug
-      }
-    ]
-  },
-  {
-    path: '/systemConfig',
-    name: 'Layout',
-    component: Layout,
-    redirect: '/systemConfig/userRolePermission/userManage',
-    children:
-      [
-        {
-          path: '/systemConfig/userRolePermission/userManage',
-          name: 'UserManage',
-          meta: { title: '人员管理' },
-          component: UserManage
-        },
-        {
-          path: '/systemConfig/userRolePermission/roleManage',
-          name: 'RoleManage',
-          meta: { title: '角色管理' },
-          component: RoleManage
-        },
-        {
-          path: '/systemConfig/userRolePermission/PermissionManage',
-          name: 'PermissionManage',
-          meta: { title: '权限管理' },
-          component: PermissionManage
-        }
-      ]
   },
   {
     path: '/devRegist',

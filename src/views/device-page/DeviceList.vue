@@ -29,11 +29,14 @@
       <div class='header-option-box'>
         <el-button icon='el-icon-plus' type='warning' size='mini' @click='showAddDia'>添加设备</el-button>
       </div>
+
+      <!--  分页表格    -->
     </div>
 
     <el-table
       :data='pageResult.records'
       style='width: 100%;'
+      size='mini'
       height='650'
       :header-cell-style="{background: '#F6F8FB'}"
     >
@@ -45,8 +48,13 @@
         show-overflow-tooltip
       />
       <el-table-column
-        prop='name'
-        label='设备名'
+        prop='categoryName'
+        label='分类名'
+        align='center'
+      />
+      <el-table-column
+        prop='icon'
+        label='图标'
         align='center'
       />
       <el-table-column
@@ -60,16 +68,10 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop='type'
-        label='主类型'
-        align='center'
-        show-overflow-tooltip
-      />
-      <el-table-column
         prop='deviceSecret'
         label='secret'
         align='center'
-        width='300'
+        width='250'
         show-overflow-tooltip
       />
       <el-table-column
@@ -97,14 +99,16 @@
         align='center'
       >
         <template slot-scope='scope'>
-          <div style='display: flex;justify-content: center'>
-            <el-button size='mini' type='warning' v-if='!scope.row.publish' @click='publishDevice(scope.row)'>发布
+          <div style='display: flex;justify-content: center' v-if='!scope.row.publish'>
+            <el-button size='mini' type='warning' @click='publishDevice(scope.row)'>发布
             </el-button>
-            <el-button size='mini' type='warning' v-if='!scope.row.publish' @click='showUpdate(scope.row)'>修改
+            <el-button size='mini' type='warning' @click='showUpdate(scope.row)'>修改
             </el-button>
-            <el-button size='mini' type='danger' v-if='!scope.row.publish' @click='delPermission(scope.row)'>删除
+            <el-button size='mini' type='danger' @click='delDevice(scope.row)'>删除
             </el-button>
           </div>
+          <el-button size='mini' type='info' @click='showUpdate(scope.row)' v-if='scope.row.publish'>详情
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -118,7 +122,7 @@
       />
     </div>
 
-    <el-dialog title='新增/修改分类' :visible.sync='addDialogFormVisible'>
+    <el-dialog :title="newObj.publish?'设备详情':'新增/修改设备'" :visible.sync='addDialogFormVisible'>
       <el-form
         ref='addForm'
         :model='newObj'
@@ -127,51 +131,40 @@
         label-width='100px'
         class='demo-ruleForm'
       >
-        <el-form-item label='分类名' prop='name'>
-          <el-input v-model='newObj.name' autocomplete='off' />
-        </el-form-item>
-        <el-form-item label='主类型' prop='type'>
+        <el-form-item label='设备分类' prop='categoryId'>
           <el-col :span='24'>
-            <el-select v-model='newObj.type' placeholder='请选择' style='width: 100%'>
+            <el-select v-model='newObj.categoryId' placeholder='请选择设备分类' style='width: 100%' @change='categoryChange'>
               <el-option
-                label='控制型'
-                :value='1'>
-              </el-option>
-              <el-option
-                label='测量型'
-                :value='2'>
+                v-for='category in categoryList'
+                :label='category.name'
+                :value='category.id'
+                :key='category.id'>
               </el-option>
             </el-select>
           </el-col>
         </el-form-item>
-        <el-form-item label='次类型' prop='subType'>
+        <el-form-item label='设备图标' prop='icon'>
           <el-col :span='24'>
-            <el-select v-model='newObj.subType' placeholder='请选择' style='width: 100%'>
+            <el-select v-model='newObj.icon' placeholder='请选择图标' style='width: 100%'>
               <el-option
-                label='控制型'
-                :value='1'>
-              </el-option>
-              <el-option
-                label='测量型'
-                :value='2'>
+                v-for='category in categoryList'
+                :label='category.name'
+                :value='category.id'
+                :key='category.id'>
               </el-option>
             </el-select>
           </el-col>
         </el-form-item>
-        <el-form-item label='通讯协议' prop='roleDesc'>
-          <el-input
-            v-model='newObj.dataFormat'
-            type='textarea'
-            :show-word-limit='true'
-            placeholder='请输入通讯协议内容'
-            maxlength='250'
-            :rows='5'
-          />
+
+        <el-form-item label='通讯协议格式' prop='roleDesc'>
+          <json-viewer
+            :value='sampleDataFormat'
+            style='line-height: 18px;'></json-viewer>
         </el-form-item>
       </el-form>
       <div slot='footer' class='dialog-footer'>
         <el-button @click='addDialogFormVisible = false'>取 消</el-button>
-        <el-button type='primary' @click='saveOrUpdate'>保 存</el-button>
+        <el-button type='primary' @click='saveOrUpdate' v-if='!newObj.publish'>保 存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -179,7 +172,13 @@
 </template>
 
 <script>
-import { categoryAddOrUpdateApi, devicePageApi, publishDeviceApi } from '@/api/DeviceManage'
+import {
+  addOrUpdateDeviceApi,
+  categoryListApi,
+  delDeviceApi,
+  devicePageApi,
+  publishDeviceApi
+} from '@/api/DeviceManage'
 
 export default {
   name: 'DeviceList',
@@ -189,11 +188,29 @@ export default {
       pageParam: {},
       newObj: {},
       addDialogFormVisible: false,
-      rules: {}
+      rules: {
+        categoryId: [
+          {
+            required: true,
+            message: '请选择设备分类',
+            trigger: 'change'
+          }
+        ],
+        icon: [
+          {
+            required: true,
+            message: '请选择图标',
+            trigger: 'change'
+          }
+        ]
+      },
+      categoryList: [],
+      sampleDataFormat: {}
     }
   },
   created() {
     this.doPageQuery()
+    this.doGetCategoryLIst()
   },
   methods: {
     doPageQuery() {
@@ -201,29 +218,63 @@ export default {
         this.pageResult = res.data
       })
     },
+    doGetCategoryLIst() {
+      categoryListApi().then(res => {
+        if (res.status) {
+          this.categoryList = res.data
+        }
+      })
+    },
     showAddDia() {
       this.addDialogFormVisible = true
+      this.newObj = {}
+      this.sampleDataFormat = {}
+      this.$nextTick(() => {
+        this.$refs.addForm.clearValidate()
+      })
+    },
+    categoryChange(e) {
+      this.categoryList.forEach(item => {
+        if (item.id === e) {
+          this.sampleDataFormat = item.dataFormat
+        }
+      })
     },
     pageNumberChange(e) {
       this.pageParam.pageNumber = e
       this.doPageQuery()
     },
     saveOrUpdate() {
-      categoryAddOrUpdateApi(this.newObj).then(res => {
+      addOrUpdateDeviceApi(this.newObj).then(res => {
         this.$message.success('操作成功')
         this.addDialogFormVisible = false
         this.doPageQuery()
       })
     },
     showUpdate(rowData) {
-      console.log(rowData)
       this.newObj = rowData
+      this.categoryList.forEach(item => {
+        if (item.id === rowData.categoryId) {
+          this.sampleDataFormat = item.dataFormat
+        }
+      })
       this.addDialogFormVisible = true
     },
     publishDevice(rowData) {
       publishDeviceApi(rowData).then(res => {
         this.$message.success('发布设备成功')
         this.doPageQuery()
+      })
+    },
+    delDevice(rowData) {
+      this.$confirm('是否确认删除设备？', '提示', { type: 'warning' }).then(() => {
+        delDeviceApi({ id: rowData.id }).then(res => {
+          if (res.status) {
+            this.$message.success('设备删除成功')
+          } else {
+            this.$message.warning(res.message)
+          }
+        })
       })
     }
   }
